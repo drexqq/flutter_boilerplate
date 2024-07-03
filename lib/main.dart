@@ -1,33 +1,29 @@
-import 'dart:developer';
+// Dart imports:
+import 'dart:async';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/app/app.dart';
-import 'package:flutter_boilerplate/services/logs/provider_log_service.dart';
-import 'package:flutter_boilerplate/services/providers/provider_platform.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'gen/assets.gen.dart';
+// Project imports:
+import 'package:flutter_boilerplate/src/features/app/app.dart';
+import 'package:flutter_boilerplate/src/services/di/injector.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: Assets.env.envDev);
+  await runZonedGuarded<Future<void>>(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
 
-  FlutterError.onError = (details) {
-    log(details.exceptionAsString(), stackTrace: details.stack);
-  };
+      // * Preserve splash screen until authentication complete.
 
-  final platformType = detectPlatformType();
+      // * Configures dependency injection to init modules and singletons.
+      await configureDependencies();
 
-  runApp(
-    ProviderScope(
-      observers: [
-        ProvidersLogger(),
-      ],
-      overrides: [
-        platformTypeProvider.overrideWithValue(platformType),
-      ],
-      child: App(),
-    ),
+      return runApp(
+        const App(),
+      );
+    },
+    (exception, stackTrace) async {
+      // * Call Sentry.captureException
+    },
   );
 }
