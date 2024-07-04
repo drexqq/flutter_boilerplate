@@ -50,7 +50,7 @@
 └── services
     ├── di                                    -> 종속성 주입을 위한 폴더
     │   ├── di.dart                           -> get_it, injectable을 사용하여 종속성 관리
-    │   └── abc_module_di.dart                -> 사용할 서비스 종속성 주입 (ex : shared_preference, etc...)
+    │   └── abc_module_di.dart                -> 사용할 서비스 종속성 주입
     └── [var]                                 -> 사용할 서비스 폴더를 생성
         └── var_service.dart                  -> 사용할 서비스 클래스 생성
 ```
