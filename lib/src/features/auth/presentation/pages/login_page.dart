@@ -17,7 +17,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text("LOGIN"),
+        child: Text(
+          "LOGIN",
+          style: TextStyle(color: Colors.black),
+        ),
       ),
     );
   }

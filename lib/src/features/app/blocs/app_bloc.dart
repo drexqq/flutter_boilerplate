@@ -1,6 +1,7 @@
 // Package imports:
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:injectable/injectable.dart';
 
 // Project imports:
 import 'package:flutter_boilerplate/src/features/app/blocs/app_event.dart';
@@ -10,12 +11,11 @@ import 'package:flutter_boilerplate/src/services/di/injector.dart';
 import 'package:flutter_boilerplate/src/utils/constants.dart';
 import 'package:flutter_boilerplate/src/utils/shortcuts/theme_shortcut.dart';
 
+@lazySingleton
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc() : super(AppState.init()) {
     on<AppThemeChangeEvent>((event, emit) async {
       final themeMode = event.themeMode;
-      if (themeMode == state.themeMode) return;
-
       await getIt<SharedPrefsService>()
           .saveString(Constants.themeMode, themeMode.name);
 

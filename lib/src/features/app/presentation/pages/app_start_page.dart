@@ -1,6 +1,4 @@
 // Flutter imports:
-
-// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -11,8 +9,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/src/features/app/blocs/app_bloc.dart';
 import 'package:flutter_boilerplate/src/features/app/blocs/app_event.dart';
 import 'package:flutter_boilerplate/src/features/app/blocs/app_state.dart';
+import 'package:flutter_boilerplate/src/features/auth/blocs/auth_bloc.dart';
+import 'package:flutter_boilerplate/src/features/auth/blocs/auth_state.dart';
+import 'package:flutter_boilerplate/src/services/di/injector.dart';
 import 'package:flutter_boilerplate/src/services/router/router.gr.dart';
-import 'package:flutter_boilerplate/src/utils/shortcuts/theme_shortcut.dart';
 
 @RoutePage()
 class AppStartPage extends StatefulWidget {
@@ -24,10 +24,12 @@ class AppStartPage extends StatefulWidget {
 
 class _AppStartPageState extends State<AppStartPage>
     with WidgetsBindingObserver {
+  final GlobalKey _key = GlobalKey();
+
   @override
   void initState() {
-    super.initState();
     WidgetsBinding.instance.addObserver(this);
+    super.initState();
   }
 
   @override
@@ -39,89 +41,28 @@ class _AppStartPageState extends State<AppStartPage>
   @override
   void didChangePlatformBrightness() {
     // * 시스템 테마 조정
-    context
-        .read<AppBloc>()
-        .add(AppThemeChangeEvent(themeMode: AppThemeMode.system));
+    if (getIt<AppBloc>().state.themeMode == AppThemeMode.system) {
+      getIt<AppBloc>().add(AppThemeChangeEvent(themeMode: AppThemeMode.system));
+    }
     super.didChangePlatformBrightness();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            context.watch<AppBloc>().state.themeMode.name,
-            style: Theme.of(context).textTheme.displayLarge,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    context.read<AppBloc>().add(
-                        AppThemeChangeEvent(themeMode: AppThemeMode.system));
-                  },
-                  child: const Text("시스템설정")),
-              ElevatedButton(
-                  onPressed: () {
-                    context.read<AppBloc>().add(
-                        AppThemeChangeEvent(themeMode: AppThemeMode.light));
-                  },
-                  child: const Text("라이트")),
-              ElevatedButton(
-                  onPressed: () {
-                    context
-                        .read<AppBloc>()
-                        .add(AppThemeChangeEvent(themeMode: AppThemeMode.dark));
-                  },
-                  child: const Text("다크")),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    context.router.push(const HomeRoute());
-                  },
-                  child: const Text("HOME")),
-              ElevatedButton(
-                  onPressed: () {
-                    context.router.push(const LoginRoute());
-                  },
-                  child: const Text("LOGIN")),
-            ],
-          ),
-          Center(
-            child: Column(
-              children: [
-                Text(
-                  "App Theme : ${context.read<AppBloc>().state.themeMode}",
-                  style: Theme.of(context).textTheme.displayMedium,
-                ),
-                Text(
-                  "System Theme : ${getIsDarkMode ? "dark" : "light"}",
-                  style: Theme.of(context).textTheme.displayMedium,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      //   return BlocProvider(
-      //     create: (context) => getIt<AuthBloc>(),
-      //     child: BlocListener<AuthBloc, AuthState>(
-      //       listener: (BuildContext context, AuthState state) {
-      //         context.router.replaceAll([const HomeRoute()]);
-      //       },
-      //       child: RepaintBoundary(
-      //         key: _key,
-      //         child: const AutoRouter(),
-      //       ),
-      //     ),
-      //   );
+    return BlocProvider(
+      create: (context) => getIt<AuthBloc>(),
+      child: BlocListener<AuthBloc, AuthState>(
+          listener: (BuildContext context, AuthState state) {
+            if (state.status == AuthStatus.authenticated) {
+              context.router.replaceAll([const HomeRoute()]);
+            } else {
+              context.router.replaceAll([const LoginRoute()]);
+            }
+          },
+          child: RepaintBoundary(
+            key: _key,
+            child: const AutoRouter(),
+          )),
     );
   }
 }

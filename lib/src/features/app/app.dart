@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,36 +13,46 @@ import 'package:flutter_boilerplate/src/services/di/injector.dart';
 import 'package:flutter_boilerplate/src/services/router/router.dart';
 import 'package:flutter_boilerplate/src/theme/app_theme.dart';
 
+final AppRouter appRouter = getIt<AppRouter>();
+
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppBloc(),
+      create: (context) => getIt<AppBloc>(),
       child: ScreenUtilInit(
         minTextAdapt: true,
         child: BlocBuilder<AppBloc, AppState>(
           builder: (context, state) {
-            final appTheme = AppTheme();
-            ThemeData? theme;
-
-            if (state.themeMode == AppThemeMode.system) {
-              final isDarkMode = state.isDarkMode;
-              theme = isDarkMode ? appTheme.dark : appTheme.light;
-            } else if (state.themeMode == AppThemeMode.light) {
-              theme = appTheme.light;
-            } else if (state.themeMode == AppThemeMode.dark) {
-              theme = appTheme.dark;
-            }
             return MaterialApp.router(
               debugShowCheckedModeBanner: false,
-              theme: theme,
-              routerConfig: getIt<AppRouter>().config(),
+              theme: _getTheme(state),
+              routerDelegate: AutoRouterDelegate(
+                appRouter,
+                navigatorObservers: () => [
+                  // * Sentry 네비게이션 이벤트 트래킹
+                ],
+              ),
+              routeInformationParser: appRouter.defaultRouteParser(),
             );
           },
         ),
       ),
     );
+  }
+
+  ThemeData? _getTheme(AppState state) {
+    final appTheme = AppTheme();
+    switch (state.themeMode) {
+      case AppThemeMode.dark:
+        return appTheme.dark;
+      case AppThemeMode.light:
+        return appTheme.light;
+      case AppThemeMode.system:
+      default:
+        return state.isDarkMode ? appTheme.dark : appTheme.light;
+    }
   }
 }
