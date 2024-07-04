@@ -49,20 +49,17 @@ class _AppStartPageState extends State<AppStartPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<AuthBloc>(),
-      child: BlocListener<AuthBloc, AuthState>(
-          listener: (BuildContext context, AuthState state) {
-            if (state.status == AuthStatus.authenticated) {
-              context.router.replaceAll([const HomeRoute()]);
-            } else {
-              context.router.replaceAll([const LoginRoute()]);
-            }
-          },
-          child: RepaintBoundary(
-            key: _key,
-            child: const AutoRouter(),
-          )),
-    );
+    return BlocListener<AuthBloc, AuthState>(
+        listener: (BuildContext context, AuthState state) {
+          if (state.status == AuthStatus.authenticated) {
+            context.router.replaceAll([const HomeRoute()]);
+          } else {
+            context.router.replaceAll([const LoginRoute()]);
+          }
+        },
+        child: RepaintBoundary(
+          key: _key,
+          child: const AutoRouter(),
+        ));
   }
 }

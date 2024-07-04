@@ -80,17 +80,17 @@ class AppTextTheme {
 
 @immutable
 class _AppTextStyleScheme {
-  TextStyle get dark => const TextStyle(
-        color: Colors.white,
+  TextStyle get _base => const TextStyle(
         fontWeight: FontWeight.w400,
         height: null,
         letterSpacing: 0,
       );
 
-  TextStyle get light => const TextStyle(
+  TextStyle get dark => _base.copyWith(
+        color: Colors.white,
+      );
+
+  TextStyle get light => _base.copyWith(
         color: Colors.black,
-        fontWeight: FontWeight.w400,
-        height: null,
-        letterSpacing: 0,
       );
 }

@@ -4,14 +4,13 @@ import 'package:flutter/scheduler.dart';
 
 // Project imports:
 import 'package:flutter_boilerplate/src/features/app/blocs/app_state.dart';
-import 'package:flutter_boilerplate/src/services/di/injector.dart';
 import 'package:flutter_boilerplate/src/theme/app_theme.dart';
 
 bool get getIsDarkMode =>
     SchedulerBinding.instance.platformDispatcher.platformBrightness ==
     Brightness.dark;
 
-AppThemeMode getThemeMode(String mode) {
+AppThemeMode getThemeModeFromString(String mode) {
   switch (mode) {
     case 'light':
       return AppThemeMode.light;
@@ -23,14 +22,15 @@ AppThemeMode getThemeMode(String mode) {
   }
 }
 
-ThemeData getThemeData(AppThemeMode mode, {bool? isStateDark}) {
-  switch (mode) {
-    case AppThemeMode.light:
-      return getIt<AppTheme>().light;
+ThemeData? getThemeDataFromAppState(AppState state) {
+  final appTheme = AppTheme();
+  switch (state.themeMode) {
     case AppThemeMode.dark:
-      return getIt<AppTheme>().dark;
+      return appTheme.dark;
+    case AppThemeMode.light:
+      return appTheme.light;
     case AppThemeMode.system:
     default:
-      return getIt<AppTheme>().system;
+      return state.isDarkMode ? appTheme.dark : appTheme.light;
   }
 }

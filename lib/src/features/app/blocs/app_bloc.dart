@@ -1,6 +1,5 @@
 // Package imports:
 import 'package:bloc/bloc.dart';
-import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:injectable/injectable.dart';
 
 // Project imports:
@@ -25,7 +24,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         final isDarkMode = themeMode == AppThemeMode.dark;
         emit(state.copyWith(isDarkMode: isDarkMode, themeMode: themeMode));
       }
-    }, transformer: droppable());
+    });
   }
 
   @override

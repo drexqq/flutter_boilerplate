@@ -32,21 +32,21 @@ class _Text {
 
 @immutable
 class _Insets {
-  static final double insetXxl = 16.sp;
-  static final double insetXl = 14.sp;
-  static final double insetL = 12.sp;
+  final double insetXxl = 16.sp;
+  final double insetXl = 14.sp;
+  final double insetL = 12.sp;
 
-  static final double insetM = 10.sp;
-  static final double insetSm = 8.sp;
+  final double insetM = 10.sp;
+  final double insetSm = 8.sp;
 
-  static final double insetS = 6.sp;
-  static final double insetXs = 4.sp;
-  static final double insetXxs = 2.sp;
+  final double insetS = 6.sp;
+  final double insetXs = 4.sp;
+  final double insetXxs = 2.sp;
 }
 
 @immutable
 class _Radius {
-  static final double radiusL = 30.sp;
-  static final double radiusM = 20.sp;
-  static final double radiusS = 10.sp;
+  final double radiusL = 30.sp;
+  final double radiusM = 20.sp;
+  final double radiusS = 10.sp;
 }

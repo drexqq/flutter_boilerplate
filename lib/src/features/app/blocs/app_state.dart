@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 // Package imports:
 import 'package:equatable/equatable.dart';
 
@@ -25,9 +23,9 @@ class AppState extends Equatable {
 
   AppState.init()
       : this(
-          themeMode: getThemeMode(
+          themeMode: getThemeModeFromString(
               getIt<SharedPrefsService>().getString(Constants.themeMode) ??
-                  "system"),
+                  AppThemeMode.system.name),
           isDarkMode: getIsDarkMode,
         );
 
