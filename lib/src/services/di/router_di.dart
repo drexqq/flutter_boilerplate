@@ -1,13 +1,12 @@
-// // Package imports:
-// import 'package:injectable/injectable.dart';
+// ignore_for_file: invalid_annotation_target
 
-// // Project imports:
-// import 'package:flutter_boilerplate/src/router/router.dart';
-// import 'package:flutter_boilerplate/src/services/di/injector.dart';
+// Package imports:
+import 'package:injectable/injectable.dart';
 
-// @module
-// abstract class RouterInjection {
-//   AppRouter router() => AppRouter();
-// }
+// Project imports:
+import 'package:flutter_boilerplate/src/services/router/router.dart';
 
-// final AppRouter appRouter = getIt<AppRouter>();
+@module
+abstract class RouterInjection {
+  AppRouter router() => AppRouter();
+}

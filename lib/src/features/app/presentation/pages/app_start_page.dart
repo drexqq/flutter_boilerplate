@@ -1,4 +1,6 @@
 // Flutter imports:
+
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -8,7 +10,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // Project imports:
 import 'package:flutter_boilerplate/src/features/app/blocs/app_bloc.dart';
 import 'package:flutter_boilerplate/src/features/app/blocs/app_event.dart';
-import 'package:flutter_boilerplate/src/utils/theme_util.dart';
+import 'package:flutter_boilerplate/src/features/app/blocs/app_state.dart';
+import 'package:flutter_boilerplate/src/services/router/router.gr.dart';
+import 'package:flutter_boilerplate/src/utils/shortcuts/theme_shortcut.dart';
 
 @RoutePage()
 class AppStartPage extends StatefulWidget {
@@ -48,7 +52,7 @@ class _AppStartPageState extends State<AppStartPage>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            context.watch<AppBloc>().state.themeMode,
+            context.watch<AppBloc>().state.themeMode.name,
             style: Theme.of(context).textTheme.displayLarge,
           ),
           Row(
@@ -73,6 +77,21 @@ class _AppStartPageState extends State<AppStartPage>
                         .add(AppThemeChangeEvent(themeMode: AppThemeMode.dark));
                   },
                   child: const Text("다크")),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    context.router.push(const HomeRoute());
+                  },
+                  child: const Text("HOME")),
+              ElevatedButton(
+                  onPressed: () {
+                    context.router.push(const LoginRoute());
+                  },
+                  child: const Text("LOGIN")),
             ],
           ),
           Center(

@@ -2,13 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+// Package imports:
+import 'package:injectable/injectable.dart';
+
 // Project imports:
-import 'package:flutter_boilerplate/src/utils/theme_util.dart';
+import 'package:flutter_boilerplate/src/theme/app_size_scheme.dart';
+import 'package:flutter_boilerplate/src/utils/shortcuts/theme_shortcut.dart';
 
-const double textLarge = 40;
-const double textMedium = 24;
-const double textSmall = 12;
-
+@lazySingleton
 class AppTheme {
   AppTheme();
 
@@ -19,9 +20,9 @@ class AppTheme {
     _setUIOverlayStyle(true);
     return ThemeData.dark(useMaterial3: false).copyWith(
       textTheme: TextTheme(
-        displayLarge: _getTextStyle(true, textLarge),
-        displayMedium: _getTextStyle(true, textMedium),
-        displaySmall: _getTextStyle(true, textSmall),
+        displayLarge: _getTextStyle(true, AppSizeScheme.text.textL),
+        displayMedium: _getTextStyle(true, AppSizeScheme.text.textM),
+        displaySmall: _getTextStyle(true, AppSizeScheme.text.textS),
       ),
     );
   }
@@ -31,9 +32,9 @@ class AppTheme {
     _setUIOverlayStyle(false);
     return ThemeData.light(useMaterial3: false).copyWith(
       textTheme: TextTheme(
-        displayLarge: _getTextStyle(false, textLarge),
-        displayMedium: _getTextStyle(false, textMedium),
-        displaySmall: _getTextStyle(false, textSmall),
+        displayLarge: _getTextStyle(false, AppSizeScheme.text.textL),
+        displayMedium: _getTextStyle(false, AppSizeScheme.text.textM),
+        displaySmall: _getTextStyle(false, AppSizeScheme.text.textS),
       ),
     );
   }

@@ -7,22 +7,23 @@ import 'package:flutter_boilerplate/src/features/app/blocs/app_event.dart';
 import 'package:flutter_boilerplate/src/features/app/blocs/app_state.dart';
 import 'package:flutter_boilerplate/src/services/database/shared_prefs_service.dart';
 import 'package:flutter_boilerplate/src/services/di/injector.dart';
-import 'package:flutter_boilerplate/src/utils/theme_util.dart';
+import 'package:flutter_boilerplate/src/utils/constants.dart';
+import 'package:flutter_boilerplate/src/utils/shortcuts/theme_shortcut.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc() : super(AppState.init()) {
     on<AppThemeChangeEvent>((event, emit) async {
       final themeMode = event.themeMode;
-      if (themeMode.name == state.themeMode) return;
+      if (themeMode == state.themeMode) return;
 
-      await getIt<SharedPrefsService>().saveString("themeMode", themeMode.name);
+      await getIt<SharedPrefsService>()
+          .saveString(Constants.themeMode, themeMode.name);
 
       if (themeMode == AppThemeMode.system) {
-        emit(state.copyWith(
-            isDarkMode: getIsDarkMode, themeMode: themeMode.name));
+        emit(state.copyWith(isDarkMode: getIsDarkMode, themeMode: themeMode));
       } else {
         final isDarkMode = themeMode == AppThemeMode.dark;
-        emit(state.copyWith(isDarkMode: isDarkMode, themeMode: themeMode.name));
+        emit(state.copyWith(isDarkMode: isDarkMode, themeMode: themeMode));
       }
     }, transformer: droppable());
   }

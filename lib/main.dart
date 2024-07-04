@@ -13,9 +13,7 @@ Future<void> main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      // * Preserve splash screen until authentication complete.
-
-      // * Configures dependency injection to init modules and singletons.
+      // * DI
       await configureDependencies();
 
       return runApp(

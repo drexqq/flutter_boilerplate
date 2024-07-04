@@ -1,13 +1,22 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 // Package imports:
 import 'package:equatable/equatable.dart';
 
 // Project imports:
 import 'package:flutter_boilerplate/src/services/database/shared_prefs_service.dart';
 import 'package:flutter_boilerplate/src/services/di/injector.dart';
-import 'package:flutter_boilerplate/src/utils/theme_util.dart';
+import 'package:flutter_boilerplate/src/utils/constants.dart';
+import 'package:flutter_boilerplate/src/utils/shortcuts/theme_shortcut.dart';
+
+enum AppThemeMode {
+  system,
+  light,
+  dark,
+}
 
 class AppState extends Equatable {
-  final String themeMode;
+  final AppThemeMode themeMode;
   final bool isDarkMode;
   const AppState({
     required this.themeMode,
@@ -16,8 +25,9 @@ class AppState extends Equatable {
 
   AppState.init()
       : this(
-          themeMode:
-              getIt<SharedPrefsService>().getString("themeMode") ?? "system",
+          themeMode: getThemeMode(
+              getIt<SharedPrefsService>().getString(Constants.themeMode) ??
+                  "system"),
           isDarkMode: getIsDarkMode,
         );
 
@@ -25,7 +35,7 @@ class AppState extends Equatable {
   List<Object?> get props => [isDarkMode, themeMode];
 
   AppState copyWith({
-    String? themeMode,
+    AppThemeMode? themeMode,
     bool? isDarkMode,
   }) {
     return AppState(

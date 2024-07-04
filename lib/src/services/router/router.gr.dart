@@ -12,11 +12,11 @@
 // Package imports:
 import 'package:auto_route/auto_route.dart' as _i4;
 
-import 'package:flutter_boilerplate/src/features/app/pages/app_start_page.dart'
+import 'package:flutter_boilerplate/src/features/app/presentation/pages/app_start_page.dart'
     as _i1;
-import 'package:flutter_boilerplate/src/features/auth/pages/login_page.dart'
+import 'package:flutter_boilerplate/src/features/auth/presentation/pages/login_page.dart'
     as _i3;
-import 'package:flutter_boilerplate/src/features/home/pages/home_page.dart'
+import 'package:flutter_boilerplate/src/features/home/presentation/pages/home_page.dart'
     as _i2;
 
 abstract class $AppRouter extends _i4.RootStackRouter {

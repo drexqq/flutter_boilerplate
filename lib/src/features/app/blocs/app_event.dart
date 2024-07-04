@@ -1,11 +1,8 @@
 // Package imports:
 import 'package:equatable/equatable.dart';
 
-enum AppThemeMode {
-  system,
-  light,
-  dark,
-}
+// Project imports:
+import 'package:flutter_boilerplate/src/features/app/blocs/app_state.dart';
 
 abstract class AppEvent extends Equatable {}
 
